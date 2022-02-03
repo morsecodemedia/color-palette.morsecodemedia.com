@@ -1,30 +1,135 @@
 <template>
-  <h1>
-    Hello World!
-  </h1>
+  <div id="app">
+    <ColorCard :colors="colors" />
+    <div class="accessiblity-table-container">
+      <table width="100%" border="1">
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <td
+              v-for="(c, i) in colors"
+              :key="i"
+            >
+              {{ c.name }} Text
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(c, i) in colors" :key="i">
+            <td valign="top">
+              {{ c.name }} background
+              <p>{{ i }}</p>
+              <button @click="showImpairments = !showImpairments">
+                Hide/Show Vision Impairment Simulations -/+
+              </button>
+            </td>
+            <td v-for="(color, index) in colors" :key="index">
+              <Trichromatic :color="color" />
+              <Protanomaly :color="color" :show-impairments="showImpairments" />
+              <Protanopia :color="color" :show-impairments="showImpairments" />
+              <Deuteranomaly :color="color" :show-impairments="showImpairments" />
+              <Deuteranopia :color="color" :show-impairments="showImpairments" />
+              <Tritanomaly :color="color" :show-impairments="showImpairments" />
+              <Tritanopia :color="color" :show-impairments="showImpairments" />
+              <Achromatomaly :color="color" :show-impairments="showImpairments" />
+              <Achromatopsia :color="color" :show-impairments="showImpairments" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
+import ColorCard from '~/components/global/color-card.vue'
+import Achromatomaly from '~/components/global/achromatomaly.vue'
+import Achromatopsia from '~/components/global/achromatopsia.vue'
+import Deuteranomaly from '~/components/global/deuteranomaly.vue'
+import Deuteranopia from '~/components/global/deuteranopia.vue'
+import Protanomaly from '~/components/global/protanomaly.vue'
+import Protanopia from '~/components/global/protanopia.vue'
+import Trichromatic from '~/components/global/trichromatic.vue'
+import Tritanomaly from '~/components/global/tritanomaly.vue'
+import Tritanopia from '~/components/global/tritanopia.vue'
 export default {
   name: 'HomePage',
-  head () {
+  components: {
+    ColorCard,
+    Trichromatic,
+    Protanomaly,
+    Protanopia,
+    Deuteranomaly,
+    Deuteranopia,
+    Tritanomaly,
+    Tritanopia,
+    Achromatomaly,
+    Achromatopsia
+  },
+  data () {
     return {
-      title: '',
-      meta: [
-        { hid: 'ogtitle', property: 'og:title', content: '' },
-        { hid: 'twtitle', name: 'twitter:title', content: '' },
-        { hid: 'googlename', itemprop: 'name', content: '' },
-        { hid: 'description', name: 'description', content: '' },
-        { hid: 'ogdescription', property: 'og:description', content: '' },
-        { hid: 'twdescription', name: 'twitter:description', content: '' },
-        { hid: 'googledescription', itemprop: 'description', content: '' },
-        { hid: 'ogurl', property: 'og:url', content: 'https://www.domain.com' + this.$route.path },
-        { hid: 'twsite', name: 'twitter:site', content: 'https://www.domain.com' + this.$route.path }
+      colors: [
+        {
+          id: 1,
+          name: 'White',
+          hex: '#FFFFFF',
+          rgb: 'rbg(255, 255, 255)',
+          hsl: 'hsl(0, 0, 100)'
+        },
+        {
+          id: 2,
+          name: 'Red',
+          hex: '#FF0000',
+          rgb: 'rgb(255, 0, 0)',
+          hsl: 'hsl(0, 100, 50)'
+        },
+        {
+          id: 3,
+          name: 'Orange',
+          hex: '#FFA500',
+          rgb: 'rgb(255, 165, 0)',
+          hsl: 'hsl(39, 100, 50)'
+        },
+        {
+          id: 4,
+          name: 'Yellow',
+          hex: '#FFFF00',
+          rgb: 'rgb(255, 255, 0)',
+          hsl: 'hsl(60, 100, 50)'
+        },
+        {
+          id: 5,
+          name: 'Green',
+          hex: '#00FF00',
+          rgb: 'rgb(0, 255, 00)',
+          hsl: 'hsl(120, 100, 50)'
+        },
+        {
+          id: 6,
+          name: 'Blue',
+          hex: '#0000FF',
+          rgb: 'rgb(0, 0, 255)',
+          hsl: 'hsl(240, 100, 50)'
+        },
+        {
+          id: 7,
+          name: 'Black',
+          hex: '#000000',
+          rgb: 'rgb(0, 0, 0)',
+          hsl: 'hsl(0, 0, 0)'
+        }
       ],
-      link: [
-        { hid: 'canonical', rel: 'canonical', href: 'https://www.domain.com' + this.$route.path }
-      ]
+      showImpairments: false
     }
   }
 }
 </script>
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
