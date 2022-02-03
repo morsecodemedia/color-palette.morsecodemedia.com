@@ -1,18 +1,13 @@
 {
-  "name": "nuxt-template",
-  "version": "2.2.0",
-  "description": "A template to start Nuxt projects, loaded with all the additional modules that are used in almost all of our projects.",
-  "author": "A morsecodemedia/tomasino project",
+  "name": "color-palette.morsecodemedia.com",
+  "version": "0.0.1",
+  "description": "An expanded version of the color contrast checker tool - allowing users to check a matrix of color palettes.",
+  "author": "A morsecodemedia project",
   "contributors": [
     {
       "name": "Brandon Morse",
       "email": "brandon@morsecodemedia.com",
       "url": "https://github.com/morsecodemedia"
-    },
-    {
-      "name": "James Tomasino",
-      "email": "james@tomasino.org",
-      "url": "https://github.com/jamestomasino"
     }
   ],
   "private": true,
