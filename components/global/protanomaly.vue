@@ -10,17 +10,17 @@
       Trouble distinguishing reds
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: protanomalyBackgroundColor }"
       class="color-box-background"
     >
       <span
-        :style="{ color: color.hex }"
+        :style="{ color: protanomalyTextColor }"
         class="color-box-text"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ protanomalyContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="protanomalyAANormal ? 'pass' : 'fail'">
+            {{ (protanomalyAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="protanomalyAALarge ? 'pass' : 'fail'">
+            {{ (protanomalyAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="protanomalyAAANormal ? 'pass' : 'fail'">
+            {{ (protanomalyAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="protanomalyAAALarge ? 'pass' : 'fail'">
+            {{ (protanomalyAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'ProtanomalyCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -59,12 +78,46 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  data () {
+    return {
+      protanomalyBackgroundColor: '',
+      protanomalyTextColor: '',
+      protanomalyContrastRatio: '',
+      protanomalyAANormal: false,
+      protanomalyAALarge: false,
+      protanomalyAAANormal: false,
+      protanomalyAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkProtanomalyColorContrast (txt, bg) {
+      this.protanomalyBackgroundColor = blinder.protanomaly(bg.slice(0, -2))
+      this.protanomalyTextColor = blinder.protanomaly(txt.slice(0, -2))
+      this.protanomalyContrastRatio = colord(this.protanomalyTextColor).contrast(this.protanomalyBackgroundColor)
+      this.protanomalyAANormal = this.protanomalyContrastRatio >= 4.5
+      this.protanomalyAALarge = this.protanomalyContrastRatio >= 3
+      this.protanomalyAAANormal = this.protanomalyContrastRatio >= 7
+      this.protanomalyAAALarge = this.protanomalyContrastRatio >= 4.5
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .protanomaly {
+  margin: 10px 0;
   display: none;
   &.show {
     display: block;
@@ -83,6 +136,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>

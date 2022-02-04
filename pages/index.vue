@@ -26,7 +26,7 @@
             </td>
             <td v-for="(color, index) in colors" :key="index">
               <Trichromatic :text-color="color" :background-color="color" />
-              <Protanomaly :color="color" :show-impairments="showImpairments" />
+              <Protanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Protanopia :color="color" :show-impairments="showImpairments" />
               <Deuteranomaly :color="color" :show-impairments="showImpairments" />
               <Deuteranopia :color="color" :show-impairments="showImpairments" />
