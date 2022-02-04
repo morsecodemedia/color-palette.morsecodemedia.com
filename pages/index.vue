@@ -18,9 +18,10 @@
           <tr v-for="(c, i) in colors" :key="i">
             <td valign="top">
               {{ c.name }} background
-              <p>{{ i }}</p>
               <button @click="showImpairments = !showImpairments">
-                Hide/Show Vision Impairment Simulations -/+
+                <span v-if="showImpairments">Hide</span>
+                <span v-else>Show</span>
+                Vision Impairment Simulations
               </button>
             </td>
             <td v-for="(color, index) in colors" :key="index">
