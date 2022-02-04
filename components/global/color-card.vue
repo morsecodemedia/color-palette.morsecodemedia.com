@@ -5,14 +5,16 @@
       <div class="color-details">
         <span class="color-name">{{ c.name }}</span>
         <span class="color-hex">Hex: {{ c.hex }}</span>
-        <span class="color-rgb">RGB: {{ c.rgb }}</span>
-        <span class="color-hsl">HSL: {{ c.hsl }}</span>
+        <span class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
+        <span class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { colord } from 'colord'
+
 export default {
   name: 'ColorCard',
   props: {
@@ -21,6 +23,14 @@ export default {
       required: true,
       twoWay: true,
       default: () => {}
+    }
+  },
+  methods: {
+    hexToRGB (hex) {
+      return colord(hex).toRgbString()
+    },
+    hexToHSL (hex) {
+      return colord(hex).toHslString()
     }
   }
 }
