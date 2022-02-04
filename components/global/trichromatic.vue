@@ -6,10 +6,12 @@
     <p class="subtitle">
       Can distinguish all three primary colors, little to no blurriness
     </p>
-    <div :style="{ backgroundColor: color.hex }" class="color-box-background">
-      <span class="color-box-text" :style="{ color: color.hex }"> Aa </span>
+    <div :style="{ backgroundColor: backgroundColor.hex }" class="color-box-background">
+      <span class="color-box-text" :style="{ color: textColor.hex }">
+        Aa
+      </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ contrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -21,13 +23,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="aaNormal ? 'pass' : 'fail'">
+            {{ (aaNormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="aaLarge ? 'pass' : 'fail'">
+            {{ (aaLarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="aaaNormal ? 'pass' : 'fail'">
+            {{ (aaaNormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="aaaLarge ? 'pass' : 'fail'">
+            {{ (aaaLarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,14 +45,53 @@
 </template>
 
 <script>
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'TrichromaticCheck',
   props: {
-    color: {
+    textColor: {
       type: Object,
       required: true,
       twoWay: true,
       default: () => {}
+    },
+    backgroundColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    }
+  },
+  data () {
+    return {
+      contrastRatio: '',
+      aaNormal: false,
+      aaLarge: false,
+      aaaNormal: false,
+      aaaLarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkColorContrast (txt, bg) {
+      this.contrastRatio = colord(txt.slice(0, -2)).contrast(bg.slice(0, -2))
+      this.aaNormal = this.contrastRatio >= 4.5
+      this.aaLarge = this.contrastRatio >= 3
+      this.aaaNormal = this.contrastRatio >= 7
+      this.aaaLarge = this.contrastRatio >= 4.5
     }
   }
 }
@@ -68,6 +117,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>

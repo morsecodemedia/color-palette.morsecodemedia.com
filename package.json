@@ -1,6 +1,6 @@
 {
   "name": "color-palette.morsecodemedia.com",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An expanded version of the color contrast checker tool - allowing users to check a matrix of color palettes.",
   "author": "A morsecodemedia project",
   "contributors": [
@@ -21,6 +21,8 @@
     "@nuxtjs/redirect-module": "^0.3.1",
     "@nuxtjs/robots": "^2.5.0",
     "@nuxtjs/sitemap": "^2.4.0",
+    "color-blind": "^0.1.1",
+    "colord": "^2.9.2",
     "core-js": "^3.19.3",
     "focus-trap-vue": "^1.1.1",
     "nuxt": "^2.15.8",

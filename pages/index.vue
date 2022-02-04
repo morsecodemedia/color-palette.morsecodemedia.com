@@ -24,7 +24,7 @@
               </button>
             </td>
             <td v-for="(color, index) in colors" :key="index">
-              <Trichromatic :color="color" />
+              <Trichromatic :text-color="color" :background-color="color" />
               <Protanomaly :color="color" :show-impairments="showImpairments" />
               <Protanopia :color="color" :show-impairments="showImpairments" />
               <Deuteranomaly :color="color" :show-impairments="showImpairments" />
