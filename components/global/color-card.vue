@@ -17,7 +17,7 @@ export default {
   name: 'ColorCard',
   props: {
     colors: {
-      type: Object,
+      type: Array,
       required: true,
       twoWay: true,
       default: () => {}

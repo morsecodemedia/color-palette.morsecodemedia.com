@@ -10,17 +10,17 @@
       Red blind - Can't see reds at all
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: protanopiaBackgroundColor }"
       class="color-box-background"
     >
       <span
+        :style="{ color: protanopiaTextColor }"
         class="color-box-text"
-        :style="{ color: color.hex }"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ protanopiaContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="protanopiaAANormal ? 'pass' : 'fail'">
+            {{ (protanopiaAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="protanopiaAALarge ? 'pass' : 'fail'">
+            {{ (protanopiaAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="protanopiaAAANormal ? 'pass' : 'fail'">
+            {{ (protanopiaAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="protanopiaAAALarge ? 'pass' : 'fail'">
+            {{ (protanopiaAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'ProtanopiaCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -59,6 +78,39 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  data () {
+    return {
+      protanopiaBackgroundColor: '',
+      protanopiaTextColor: '',
+      protanopiaContrastRatio: '',
+      protanopiaAANormal: false,
+      protanopiaAALarge: false,
+      protanopiaAAANormal: false,
+      protanopiaAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkProtanopiaColorContrast (txt, bg) {
+      this.protanopiaBackgroundColor = blinder.protanopia(bg.slice(0, -2))
+      this.protanopiaTextColor = blinder.protanopia(txt.slice(0, -2))
+      this.protanopiaContrastRatio = colord(this.protanopiaTextColor).contrast(this.protanopiaBackgroundColor)
+      this.protanopiaAANormal = this.protanopiaContrastRatio >= 4.5
+      this.protanopiaAALarge = this.protanopiaContrastRatio >= 3
+      this.protanopiaAAANormal = this.protanopiaContrastRatio >= 7
+      this.protanopiaAAALarge = this.protanopiaContrastRatio >= 4.5
+    }
   }
 }
 </script>
@@ -66,6 +118,7 @@ export default {
 <style lang="scss">
 .protanopia {
   display: none;
+  margin: 10px 0;
   &.show {
     display: block;
   }
@@ -83,6 +136,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>
