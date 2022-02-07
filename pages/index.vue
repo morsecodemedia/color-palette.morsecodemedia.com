@@ -28,7 +28,7 @@
               <Trichromatic :text-color="color" :background-color="color" />
               <Protanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Protanopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Deuteranomaly :color="color" :show-impairments="showImpairments" />
+              <Deuteranomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Deuteranopia :color="color" :show-impairments="showImpairments" />
               <Tritanomaly :color="color" :show-impairments="showImpairments" />
               <Tritanopia :color="color" :show-impairments="showImpairments" />

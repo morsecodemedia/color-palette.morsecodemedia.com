@@ -7,20 +7,20 @@
       Deuteranomaly
     </p>
     <p class="subtitle">
-      Trouble distinguishing greens
+      Red blind - Can't see reds at all
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: deuteranomalyBackgroundColor }"
       class="color-box-background"
     >
       <span
-        :style="{ color: color.hex }"
+        :style="{ color: deuteranomalyTextColor }"
         class="color-box-text"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ deuteranomalyContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranomalyAANormal ? 'pass' : 'fail'">
+            {{ (deuteranomalyAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranomalyAALarge ? 'pass' : 'fail'">
+            {{ (deuteranomalyAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranomalyAAANormal ? 'pass' : 'fail'">
+            {{ (deuteranomalyAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranomalyAAALarge ? 'pass' : 'fail'">
+            {{ (deuteranomalyAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'DeuteranomalyCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -59,6 +78,39 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  data () {
+    return {
+      deuteranomalyBackgroundColor: '',
+      deuteranomalyTextColor: '',
+      deuteranomalyContrastRatio: '',
+      deuteranomalyAANormal: false,
+      deuteranomalyAALarge: false,
+      deuteranomalyAAANormal: false,
+      deuteranomalyAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkDeuteranomalyColorContrast (txt, bg) {
+      this.deuteranomalyBackgroundColor = blinder.deuteranomaly(bg.slice(0, -2))
+      this.deuteranomalyTextColor = blinder.deuteranomaly(txt.slice(0, -2))
+      this.deuteranomalyContrastRatio = colord(this.deuteranomalyTextColor).contrast(this.deuteranomalyBackgroundColor)
+      this.deuteranomalyAANormal = this.deuteranomalyContrastRatio >= 4.5
+      this.deuteranomalyAALarge = this.deuteranomalyContrastRatio >= 3
+      this.deuteranomalyAAANormal = this.deuteranomalyContrastRatio >= 7
+      this.deuteranomalyAAALarge = this.deuteranomalyContrastRatio >= 4.5
+    }
   }
 }
 </script>
@@ -66,6 +118,7 @@ export default {
 <style lang="scss">
 .deuteranomaly {
   display: none;
+  margin: 10px 0;
   &.show {
     display: block;
   }
@@ -83,6 +136,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>
