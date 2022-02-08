@@ -30,7 +30,7 @@
               <Protanopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Deuteranomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Deuteranopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Tritanomaly :color="color" :show-impairments="showImpairments" />
+              <Tritanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Tritanopia :color="color" :show-impairments="showImpairments" />
               <Achromatomaly :color="color" :show-impairments="showImpairments" />
               <Achromatopsia :color="color" :show-impairments="showImpairments" />

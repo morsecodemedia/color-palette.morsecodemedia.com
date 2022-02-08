@@ -10,17 +10,17 @@
       Trouble distinguishing blues
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: tritanomalyBackgroundColor }"
       class="color-box-background"
     >
       <span
-        :style="{ color: color.hex }"
+        :style="{ color: tritanomalyTextColor }"
         class="color-box-text"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ tritanomalyContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranomalyAANormal ? 'pass' : 'fail'">
+            {{ (deuteranomalyAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranomalyAALarge ? 'pass' : 'fail'">
+            {{ (deuteranomalyAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranomalyAAANormal ? 'pass' : 'fail'">
+            {{ (deuteranomalyAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranomalyAAALarge ? 'pass' : 'fail'">
+            {{ (deuteranomalyAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'TritanomalyCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -58,6 +77,39 @@ export default {
     showImpairments: {
       type: Boolean,
       required: true
+    }
+  },
+  data () {
+    return {
+      tritanomalyBackgroundColor: '',
+      tritanomalyTextColor: '',
+      tritanomalyContrastRatio: '',
+      tritanomalyAANormal: false,
+      tritanomalyAALarge: false,
+      tritanomalyAAANormal: false,
+      tritanomalyAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkTritanomalyColorContrast (txt, bg) {
+      this.tritanomalyBackgroundColor = blinder.tritanomaly(bg.slice(0, -2))
+      this.tritanomalyTextColor = blinder.tritanomaly(txt.slice(0, -2))
+      this.tritanomalyContrastRatio = colord(this.tritanomalyTextColor).contrast(this.tritanomalyBackgroundColor)
+      this.tritanomalyAANormal = this.tritanomalyContrastRatio >= 4.5
+      this.tritanomalyAALarge = this.tritanomalyContrastRatio >= 3
+      this.tritanomalyAAANormal = this.tritanomalyContrastRatio >= 7
+      this.tritanomalyAAALarge = this.tritanomalyContrastRatio >= 4.5
     }
   }
 }
@@ -83,6 +135,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>
