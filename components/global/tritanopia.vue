@@ -10,17 +10,17 @@
       Blue blind - Can't see blues at all
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: tritanopiaBackgroundColor }"
       class="color-box-background"
     >
       <span
-        :style="{ color: color.hex }"
+        :style="{ color: tritanopiaTextColor }"
         class="color-box-text"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ tritanopiaContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="tritanopiaAANormal ? 'pass' : 'fail'">
+            {{ (tritanopiaAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="tritanopiaAALarge ? 'pass' : 'fail'">
+            {{ (tritanopiaAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="tritanopiaAAANormal ? 'pass' : 'fail'">
+            {{ (tritanopiaAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="tritanopiaAAALarge ? 'pass' : 'fail'">
+            {{ (tritanopiaAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'TritanopiaCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -58,6 +77,39 @@ export default {
     showImpairments: {
       type: Boolean,
       required: true
+    }
+  },
+  data () {
+    return {
+      tritanopiaBackgroundColor: '',
+      tritanopiaTextColor: '',
+      tritanopiaContrastRatio: '',
+      tritanopiaAANormal: false,
+      tritanopiaAALarge: false,
+      tritanopiaAAANormal: false,
+      tritanopiaAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkTritanopiaColorContrast (txt, bg) {
+      this.tritanopiaBackgroundColor = blinder.tritanopia(bg.slice(0, -2))
+      this.tritanopiaTextColor = blinder.tritanopia(txt.slice(0, -2))
+      this.tritanopiaContrastRatio = colord(this.tritanopiaTextColor).contrast(this.tritanopiaBackgroundColor)
+      this.tritanopiaAANormal = this.tritanopiaContrastRatio >= 4.5
+      this.tritanopiaAALarge = this.tritanopiaContrastRatio >= 3
+      this.tritanopiaAAANormal = this.tritanopiaContrastRatio >= 7
+      this.tritanopiaAAALarge = this.tritanopiaContrastRatio >= 4.5
     }
   }
 }
@@ -83,6 +135,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>
