@@ -32,20 +32,20 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td :class="deuteranomalyAANormal ? 'pass' : 'fail'">
-            {{ (deuteranomalyAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          <td :class="tritanomalyAANormal ? 'pass' : 'fail'">
+            {{ (tritanomalyAANormal) ? '✓ PASS' : '✗ FAIL' }}
           </td>
-          <td :class="deuteranomalyAALarge ? 'pass' : 'fail'">
-            {{ (deuteranomalyAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          <td :class="tritanomalyAALarge ? 'pass' : 'fail'">
+            {{ (tritanomalyAALarge) ? '✓ PASS' : '✗ FAIL' }}
           </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td :class="deuteranomalyAAANormal ? 'pass' : 'fail'">
-            {{ (deuteranomalyAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          <td :class="tritanomalyAAANormal ? 'pass' : 'fail'">
+            {{ (tritanomalyAAANormal) ? '✓ PASS' : '✗ FAIL' }}
           </td>
-          <td :class="deuteranomalyAAALarge ? 'pass' : 'fail'">
-            {{ (deuteranomalyAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          <td :class="tritanomalyAAALarge ? 'pass' : 'fail'">
+            {{ (tritanomalyAAALarge) ? '✓ PASS' : '✗ FAIL' }}
           </td>
         </tr>
       </tbody>
