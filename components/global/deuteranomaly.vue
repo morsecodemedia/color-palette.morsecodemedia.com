@@ -7,7 +7,7 @@
       Deuteranomaly
     </p>
     <p class="subtitle">
-      Red blind - Can't see reds at all
+      Trouble distinguishing greens
     </p>
     <div
       :style="{ backgroundColor: deuteranomalyBackgroundColor }"

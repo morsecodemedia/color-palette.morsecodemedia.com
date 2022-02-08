@@ -10,17 +10,17 @@
       Green blind - Can't see greens at all
     </p>
     <div
-      :style="{ backgroundColor: color.hex }"
+      :style="{ backgroundColor: deuteranopiaBackgroundColor }"
       class="color-box-background"
     >
       <span
-        :style="{ color: color.hex }"
+        :style="{ color: deuteranopiaTextColor }"
         class="color-box-text"
       >
         Aa
       </span>
     </div>
-    <p>Contrast Ratio: #.##:1</p>
+    <p>Contrast Ratio: {{ deuteranopiaContrastRatio }}:1</p>
     <table width="100%">
       <thead>
         <tr>
@@ -32,13 +32,21 @@
       <tbody>
         <tr>
           <th>AA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranopiaAANormal ? 'pass' : 'fail'">
+            {{ (deuteranopiaAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranopiaAALarge ? 'pass' : 'fail'">
+            {{ (deuteranopiaAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
         <tr>
           <th>AAA</th>
-          <td>Pass/Fail</td>
-          <td>Pass/Fail</td>
+          <td :class="deuteranopiaAAANormal ? 'pass' : 'fail'">
+            {{ (deuteranopiaAAANormal) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
+          <td :class="deuteranopiaAAALarge ? 'pass' : 'fail'">
+            {{ (deuteranopiaAAALarge) ? '✓ PASS' : '✗ FAIL' }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,10 +54,21 @@
 </template>
 
 <script>
+import blinder from 'color-blind'
+import { colord, extend } from 'colord'
+import a11yPlugin from 'colord/plugins/a11y'
+extend([a11yPlugin])
+
 export default {
   name: 'DeuteranopiaCheck',
   props: {
-    color: {
+    textColor: {
+      type: Object,
+      required: true,
+      twoWay: true,
+      default: () => {}
+    },
+    backgroundColor: {
       type: Object,
       required: true,
       twoWay: true,
@@ -59,6 +78,39 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  data () {
+    return {
+      deuteranopiaBackgroundColor: '',
+      deuteranopiaTextColor: '',
+      deuteranopiaContrastRatio: '',
+      deuteranopiaAANormal: false,
+      deuteranopiaAALarge: false,
+      deuteranopiaAAANormal: false,
+      deuteranopiaAAALarge: false
+    }
+  },
+  watch: {
+    backgroundColor () {
+      this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    },
+    textColor () {
+      this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    }
+  },
+  mounted () {
+    this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+  },
+  methods: {
+    checkDeuteranopiaColorContrast (txt, bg) {
+      this.deuteranopiaBackgroundColor = blinder.deuteranopia(bg.slice(0, -2))
+      this.deuteranopiaTextColor = blinder.deuteranopia(txt.slice(0, -2))
+      this.deuteranopiaContrastRatio = colord(this.deuteranopiaTextColor).contrast(this.deuteranopiaBackgroundColor)
+      this.deuteranopiaAANormal = this.deuteranopiaContrastRatio >= 4.5
+      this.deuteranopiaAALarge = this.deuteranopiaContrastRatio >= 3
+      this.deuteranopiaAAANormal = this.deuteranopiaContrastRatio >= 7
+      this.deuteranopiaAAALarge = this.deuteranopiaContrastRatio >= 4.5
+    }
   }
 }
 </script>
@@ -66,6 +118,7 @@ export default {
 <style lang="scss">
 .deuteranopia {
   display: none;
+  margin: 10px 0;
   &.show {
     display: block;
   }
@@ -83,6 +136,14 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+  }
+  td {
+    &.pass {
+      color: green;
+    }
+    &.fail {
+      color: red;
+    }
   }
 }
 </style>
