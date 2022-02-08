@@ -77,51 +77,37 @@ export default {
         {
           id: 1,
           name: 'White',
-          hex: '#FFFFFF',
-          rgb: 'rbg(255, 255, 255)',
-          hsl: 'hsl(0, 0, 100)'
+          hex: '#FFFFFF'
         },
         {
           id: 2,
           name: 'Red',
-          hex: '#FF0000',
-          rgb: 'rgb(255, 0, 0)',
-          hsl: 'hsl(0, 100, 50)'
+          hex: '#FF0000'
         },
         {
           id: 3,
           name: 'Orange',
-          hex: '#FFA500',
-          rgb: 'rgb(255, 165, 0)',
-          hsl: 'hsl(39, 100, 50)'
+          hex: '#FFA500'
         },
         {
           id: 4,
           name: 'Yellow',
-          hex: '#FFFF00',
-          rgb: 'rgb(255, 255, 0)',
-          hsl: 'hsl(60, 100, 50)'
+          hex: '#FFFF00'
         },
         {
           id: 5,
           name: 'Green',
-          hex: '#00FF00',
-          rgb: 'rgb(0, 255, 00)',
-          hsl: 'hsl(120, 100, 50)'
+          hex: '#00FF00'
         },
         {
           id: 6,
           name: 'Blue',
-          hex: '#0000FF',
-          rgb: 'rgb(0, 0, 255)',
-          hsl: 'hsl(240, 100, 50)'
+          hex: '#0000FF'
         },
         {
           id: 7,
           name: 'Black',
-          hex: '#000000',
-          rgb: 'rgb(0, 0, 0)',
-          hsl: 'hsl(0, 0, 0)'
+          hex: '#000000'
         }
       ],
       editColors: false,
