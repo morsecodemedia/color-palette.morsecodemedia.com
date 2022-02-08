@@ -32,8 +32,8 @@
               <Deuteranopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Tritanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
               <Tritanopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Achromatomaly :color="color" :show-impairments="showImpairments" />
-              <Achromatopsia :color="color" :show-impairments="showImpairments" />
+              <Achromatomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
+              <Achromatopsia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
             </td>
           </tr>
         </tbody>
