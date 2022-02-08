@@ -3,7 +3,8 @@
     <div v-for="(c, i) in colors" :key="i" class="color-card">
       <div :style="{ backgroundColor: c.hex }" class="color-block" />
       <div class="color-details">
-        <span class="color-name">{{ c.name }}</span>
+        <span v-if="!editColors" class="color-name">{{ c.name }}</span>
+        <input v-else v-model="c.name" type="text" value="c.name">
         <span class="color-hex">Hex: {{ c.hex }}</span>
         <span class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
         <span class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
@@ -22,6 +23,11 @@ export default {
       type: Array,
       required: true,
       twoWay: true,
+      default: () => {}
+    },
+    editColors: {
+      type: Boolean,
+      required: true,
       default: () => {}
     }
   },

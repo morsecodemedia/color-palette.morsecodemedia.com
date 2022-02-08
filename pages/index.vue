@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <ColorCard :colors="colors" />
+    <ColorCard :colors="colors" :edit-colors="editColors" />
+    <button @click="editColors = !editColors">
+      Edit Color Palette
+    </button>
     <div class="accessiblity-table-container">
       <table width="100%" border="1">
         <thead>
@@ -120,6 +123,7 @@ export default {
           hsl: 'hsl(0, 0, 0)'
         }
       ],
+      editColors: false,
       showImpairments: false
     }
   }

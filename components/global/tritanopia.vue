@@ -117,6 +117,7 @@ export default {
 
 <style lang="scss">
 .tritanopia {
+  margin: 10px 0;
   display: none;
   &.show {
     display: block;
