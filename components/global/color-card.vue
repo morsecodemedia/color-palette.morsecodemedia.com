@@ -1,13 +1,22 @@
 <template>
   <div class="color-cards-container">
     <div v-for="(c, i) in colors" :key="i" class="color-card">
-      <div :style="{ backgroundColor: c.hex }" class="color-block" />
+      <div v-if="!editColors" :style="{ backgroundColor: c.hex }" class="color-block" />
+      <v-color-picker
+        v-else
+        v-model="c.hex"
+        hide-mode-switch
+        mode="hexa"
+        canvas-height="200"
+        width="200px"
+        class="color-block-picker"
+      />
       <div class="color-details">
-        <span v-if="!editColors" class="color-name">{{ c.name }}</span>
-        <input v-else v-model="c.name" type="text" value="c.name">
-        <span class="color-hex">Hex: {{ c.hex }}</span>
-        <span class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
-        <span class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
+        <span v-if="!editColors" class="color-name">{{ (c.name !== '') ? c.name : 'Color ' + i }}</span>
+        <input v-else v-model="c.name" placeholder="Name of Color" type="text" value="c.name">
+        <span v-show="!editColors" class="color-hex">Hex: {{ c.hex }}</span>
+        <span v-show="!editColors" class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
+        <span v-show="!editColors" class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
       </div>
     </div>
   </div>
@@ -59,6 +68,10 @@ export default {
       height: 200px;
       width: 200px;
       border: 1px solid black;
+      margin-bottom: 10px;
+    }
+
+    .color-block-picker {
       margin-bottom: 10px;
     }
 
