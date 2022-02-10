@@ -1,19 +1,39 @@
 <template>
   <div class="color-cards-container">
     <div v-for="(c, i) in colors" :key="i" class="color-card">
-      <div v-if="!editColors" :style="{ backgroundColor: c.hex }" class="color-block" />
-      <input
+      <div
+        v-if="!editColors"
+        :style="{ backgroundColor: c.hex }"
+        class="color-block"
+      />
+      <div
         v-else
-        v-model="c.hex"
-        type="color"
-        class="color-picker"
+        class="color-block-editor"
       >
-      <div class="color-details">
-        <span v-if="!editColors" class="color-name">{{ (c.name !== '') ? c.name : 'Color ' + i }}</span>
-        <input v-else v-model="c.name" placeholder="Name of Color" type="text" value="c.name">
-        <span v-show="!editColors" class="color-hex">Hex: {{ c.hex }}</span>
-        <span v-show="!editColors" class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
-        <span v-show="!editColors" class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
+        <input
+          v-model="c.hex"
+          type="color"
+          class="color-picker"
+        >
+        <input
+          v-model="c.name"
+          placeholder="Name of Color"
+          type="text"
+          value="c.name"
+        >
+        <input
+          v-model="c.hex"
+          type="text"
+        >
+      </div>
+      <div
+        v-if="!editColors"
+        class="color-details"
+      >
+        <span class="color-name">{{ (c.name !== '') ? c.name : 'Color ' + i }}</span>
+        <span class="color-hex">Hex: {{ c.hex }}</span>
+        <span class="color-rgb">RGB: {{ hexToRGB(c.hex) }}</span>
+        <span class="color-hsl">HSL: {{ hexToHSL(c.hex) }}</span>
       </div>
     </div>
   </div>
@@ -68,10 +88,17 @@ export default {
       margin-bottom: 10px;
     }
 
-    .color-picker {
-      height: 200px;
+    .color-block-editor {
       width: 200px;
       margin-bottom: 10px;
+      .color-picker {
+        height: 200px;
+        width: 200px;
+        margin-bottom: 10px;
+      }
+      input {
+        margin-bottom: 10px;
+      }
     }
 
     .color-details {
