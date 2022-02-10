@@ -2,7 +2,12 @@
   <div class="color-cards-container">
     <div v-for="(c, i) in colors" :key="i" class="color-card">
       <div v-if="!editColors" :style="{ backgroundColor: c.hex }" class="color-block" />
-      <!-- Color Picker Here -->
+      <input
+        v-else
+        v-model="c.hex"
+        type="color"
+        class="color-picker"
+      >
       <div class="color-details">
         <span v-if="!editColors" class="color-name">{{ (c.name !== '') ? c.name : 'Color ' + i }}</span>
         <input v-else v-model="c.name" placeholder="Name of Color" type="text" value="c.name">
@@ -63,7 +68,9 @@ export default {
       margin-bottom: 10px;
     }
 
-    .color-block-picker {
+    .color-picker {
+      height: 200px;
+      width: 200px;
       margin-bottom: 10px;
     }
 
