@@ -123,10 +123,14 @@ export default {
       let result = ''
       for (let counter1 = 0; counter1 < arr.length; counter1++) {
         for (let counter2 = 0; counter2 < arr.length; counter2++) {
-          if (counter1 === 0 && counter2 > 0) {
-            // result += '[' + arr[counter2].hex + ']: <br />'
+          if (counter1 === 0 && counter2 === 0) {
+            result += '[' + arr[counter1].hex + ']: <br />'
+            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
+          } else if (counter1 === 0 && counter2 > 0) {
+            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
           } else if (counter2 === 0 && counter1 > 0) {
             result += '[' + arr[counter1].hex + ']: <br />'
+            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
           } else if (counter1 > 0 && counter2 > 0) {
             result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
           }
