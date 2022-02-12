@@ -63,16 +63,16 @@ export default {
   name: 'ProtanomalyCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkProtanomalyColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkProtanomalyColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkProtanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkProtanomalyColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkProtanomalyColorContrast (txt, bg) {
-      this.protanomalyBackgroundColor = blinder.protanomaly(bg.slice(0, -2))
-      this.protanomalyTextColor = blinder.protanomaly(txt.slice(0, -2))
+      this.protanomalyBackgroundColor = blinder.protanomaly(bg)
+      this.protanomalyTextColor = blinder.protanomaly(txt)
       this.protanomalyContrastRatio = colord(this.protanomalyTextColor).contrast(this.protanomalyBackgroundColor)
       this.protanomalyAANormal = this.protanomalyContrastRatio >= 4.5
       this.protanomalyAALarge = this.protanomalyContrastRatio >= 3

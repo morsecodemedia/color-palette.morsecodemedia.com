@@ -63,16 +63,16 @@ export default {
   name: 'ProtanopiaCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkProtanopiaColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkProtanopiaColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkProtanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkProtanopiaColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkProtanopiaColorContrast (txt, bg) {
-      this.protanopiaBackgroundColor = blinder.protanopia(bg.slice(0, -2))
-      this.protanopiaTextColor = blinder.protanopia(txt.slice(0, -2))
+      this.protanopiaBackgroundColor = blinder.protanopia(bg)
+      this.protanopiaTextColor = blinder.protanopia(txt)
       this.protanopiaContrastRatio = colord(this.protanopiaTextColor).contrast(this.protanopiaBackgroundColor)
       this.protanopiaAANormal = this.protanopiaContrastRatio >= 4.5
       this.protanopiaAALarge = this.protanopiaContrastRatio >= 3

@@ -63,16 +63,16 @@ export default {
   name: 'TritanomalyCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkTritanomalyColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkTritanomalyColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkTritanomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkTritanomalyColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkTritanomalyColorContrast (txt, bg) {
-      this.tritanomalyBackgroundColor = blinder.tritanomaly(bg.slice(0, -2))
-      this.tritanomalyTextColor = blinder.tritanomaly(txt.slice(0, -2))
+      this.tritanomalyBackgroundColor = blinder.tritanomaly(bg)
+      this.tritanomalyTextColor = blinder.tritanomaly(txt)
       this.tritanomalyContrastRatio = colord(this.tritanomalyTextColor).contrast(this.tritanomalyBackgroundColor)
       this.tritanomalyAANormal = this.tritanomalyContrastRatio >= 4.5
       this.tritanomalyAALarge = this.tritanomalyContrastRatio >= 3

@@ -6,8 +6,8 @@
     <p class="subtitle">
       Can distinguish all three primary colors, little to no blurriness
     </p>
-    <div :style="{ backgroundColor: backgroundColor.hex }" class="color-box-background">
-      <span class="color-box-text" :style="{ color: textColor.hex }">
+    <div :style="{ backgroundColor: backgroundColor }" class="color-box-background">
+      <span class="color-box-text" :style="{ color: textColor }">
         Aa
       </span>
     </div>
@@ -53,16 +53,16 @@ export default {
   name: 'TrichromaticCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     }
   },
   data () {
@@ -76,18 +76,18 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkColorContrast (txt, bg) {
-      this.contrastRatio = colord(txt.slice(0, -2)).contrast(bg.slice(0, -2))
+      this.contrastRatio = colord(txt).contrast(bg)
       this.aaNormal = this.contrastRatio >= 4.5
       this.aaLarge = this.contrastRatio >= 3
       this.aaaNormal = this.contrastRatio >= 7

@@ -63,16 +63,16 @@ export default {
   name: 'DeuteranomalyCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkDeuteranomalyColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkDeuteranomalyColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkDeuteranomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkDeuteranomalyColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkDeuteranomalyColorContrast (txt, bg) {
-      this.deuteranomalyBackgroundColor = blinder.deuteranomaly(bg.slice(0, -2))
-      this.deuteranomalyTextColor = blinder.deuteranomaly(txt.slice(0, -2))
+      this.deuteranomalyBackgroundColor = blinder.deuteranomaly(bg)
+      this.deuteranomalyTextColor = blinder.deuteranomaly(txt)
       this.deuteranomalyContrastRatio = colord(this.deuteranomalyTextColor).contrast(this.deuteranomalyBackgroundColor)
       this.deuteranomalyAANormal = this.deuteranomalyContrastRatio >= 4.5
       this.deuteranomalyAALarge = this.deuteranomalyContrastRatio >= 3

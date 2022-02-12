@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <div v-html="doIt" />
     <ColorCard :colors="colors" :edit-colors="editColors" />
     <button @click="editColors = !editColors">
       Edit Color Palette
@@ -21,7 +20,7 @@
         <tbody>
           <tr v-for="(c, i) in colors" :key="i">
             <td valign="top">
-              {{ c.name }} background
+              {{ c.name }} Background
               <button @click="showImpairments = !showImpairments">
                 <span v-if="showImpairments">Hide</span>
                 <span v-else>Show</span>
@@ -29,15 +28,15 @@
               </button>
             </td>
             <td v-for="(color, index) in colors" :key="index">
-              <Trichromatic :text-color="color" :background-color="color" />
-              <Protanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Protanopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Deuteranomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Deuteranopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Tritanomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Tritanopia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Achromatomaly :text-color="color" :background-color="color" :show-impairments="showImpairments" />
-              <Achromatopsia :text-color="color" :background-color="color" :show-impairments="showImpairments" />
+              <Trichromatic :text-color="color.hex" :background-color="c.hex" />
+              <Protanomaly :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Protanopia :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Deuteranomaly :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Deuteranopia :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Tritanomaly :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Tritanopia :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Achromatomaly :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
+              <Achromatopsia :text-color="color.hex" :background-color="c.hex" :show-impairments="showImpairments" />
             </td>
           </tr>
         </tbody>
@@ -111,33 +110,7 @@ export default {
         }
       ],
       editColors: false,
-      showImpairments: false,
-      doIt: ''
-    }
-  },
-  mounted () {
-    this.doIt = this.dothis(this.colors)
-  },
-  methods: {
-    dothis: (arr) => {
-      let result = ''
-      for (let counter1 = 0; counter1 < arr.length; counter1++) {
-        for (let counter2 = 0; counter2 < arr.length; counter2++) {
-          if (counter1 === 0 && counter2 === 0) {
-            result += '[' + arr[counter1].hex + ']: <br />'
-            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
-          } else if (counter1 === 0 && counter2 > 0) {
-            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
-          } else if (counter2 === 0 && counter1 > 0) {
-            result += '[' + arr[counter1].hex + ']: <br />'
-            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
-          } else if (counter1 > 0 && counter2 > 0) {
-            result += '[' + arr[counter1].hex + ' X ' + arr[counter2].hex + '] ' + '<br />'
-          }
-        }
-      }
-
-      return result
+      showImpairments: false
     }
   }
 }

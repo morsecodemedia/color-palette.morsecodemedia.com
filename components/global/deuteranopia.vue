@@ -63,16 +63,16 @@ export default {
   name: 'DeuteranopiaCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkDeuteranopiaColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkDeuteranopiaColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkDeuteranopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkDeuteranopiaColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkDeuteranopiaColorContrast (txt, bg) {
-      this.deuteranopiaBackgroundColor = blinder.deuteranopia(bg.slice(0, -2))
-      this.deuteranopiaTextColor = blinder.deuteranopia(txt.slice(0, -2))
+      this.deuteranopiaBackgroundColor = blinder.deuteranopia(bg)
+      this.deuteranopiaTextColor = blinder.deuteranopia(txt)
       this.deuteranopiaContrastRatio = colord(this.deuteranopiaTextColor).contrast(this.deuteranopiaBackgroundColor)
       this.deuteranopiaAANormal = this.deuteranopiaContrastRatio >= 4.5
       this.deuteranopiaAALarge = this.deuteranopiaContrastRatio >= 3

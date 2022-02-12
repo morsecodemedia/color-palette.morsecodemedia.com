@@ -63,16 +63,16 @@ export default {
   name: 'AchromatopsiaCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkAchromatopsiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkAchromatopsiaColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkAchromatopsiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkAchromatopsiaColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkAchromatopsiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkAchromatopsiaColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkAchromatopsiaColorContrast (txt, bg) {
-      this.achromatopsiaBackgroundColor = blinder.achromatopsia(bg.slice(0, -2))
-      this.achromatopsiaTextColor = blinder.achromatopsia(txt.slice(0, -2))
+      this.achromatopsiaBackgroundColor = blinder.achromatopsia(bg)
+      this.achromatopsiaTextColor = blinder.achromatopsia(txt)
       this.achromatopsiaContrastRatio = colord(this.achromatopsiaTextColor).contrast(this.achromatopsiaBackgroundColor)
       this.achromatopsiaAANormal = this.achromatopsiaContrastRatio >= 4.5
       this.achromatopsiaAALarge = this.achromatopsiaContrastRatio >= 3

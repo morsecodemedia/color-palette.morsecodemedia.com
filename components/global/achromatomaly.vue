@@ -63,16 +63,16 @@ export default {
   name: 'AchromatomalyCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkAchromatomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkAchromatomalyColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkAchromatomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkAchromatomalyColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkAchromatomalyColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkAchromatomalyColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkAchromatomalyColorContrast (txt, bg) {
-      this.achromatomalyBackgroundColor = blinder.achromatomaly(bg.slice(0, -2))
-      this.achromatomalyTextColor = blinder.achromatomaly(txt.slice(0, -2))
+      this.achromatomalyBackgroundColor = blinder.achromatomaly(bg)
+      this.achromatomalyTextColor = blinder.achromatomaly(txt)
       this.achromatomalyContrastRatio = colord(this.achromatomalyTextColor).contrast(this.achromatomalyBackgroundColor)
       this.achromatomalyAANormal = this.achromatomalyContrastRatio >= 4.5
       this.achromatomalyAALarge = this.achromatomalyContrastRatio >= 3

@@ -63,16 +63,16 @@ export default {
   name: 'TritanopiaCheck',
   props: {
     textColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     backgroundColor: {
-      type: Object,
+      type: String,
       required: true,
       twoWay: true,
-      default: () => {}
+      default: ''
     },
     showImpairments: {
       type: Boolean,
@@ -92,19 +92,19 @@ export default {
   },
   watch: {
     backgroundColor () {
-      this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkTritanopiaColorContrast(this.textColor, this.backgroundColor)
     },
     textColor () {
-      this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+      this.checkTritanopiaColorContrast(this.textColor, this.backgroundColor)
     }
   },
   mounted () {
-    this.checkTritanopiaColorContrast(this.textColor.hex, this.backgroundColor.hex)
+    this.checkTritanopiaColorContrast(this.textColor, this.backgroundColor)
   },
   methods: {
     checkTritanopiaColorContrast (txt, bg) {
-      this.tritanopiaBackgroundColor = blinder.tritanopia(bg.slice(0, -2))
-      this.tritanopiaTextColor = blinder.tritanopia(txt.slice(0, -2))
+      this.tritanopiaBackgroundColor = blinder.tritanopia(bg)
+      this.tritanopiaTextColor = blinder.tritanopia(txt)
       this.tritanopiaContrastRatio = colord(this.tritanopiaTextColor).contrast(this.tritanopiaBackgroundColor)
       this.tritanopiaAANormal = this.tritanopiaContrastRatio >= 4.5
       this.tritanopiaAALarge = this.tritanopiaContrastRatio >= 3
