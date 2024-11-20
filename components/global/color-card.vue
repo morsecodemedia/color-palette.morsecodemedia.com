@@ -82,18 +82,18 @@ export default {
     align-content: center;
 
     .color-block {
-      height: 200px;
-      width: 200px;
+      height: 100px;
+      max-width: 200px;
       border: 1px solid black;
       margin-bottom: 10px;
     }
 
     .color-block-editor {
-      width: 200px;
+      max-width: 200px;
       margin-bottom: 10px;
       .color-picker {
-        height: 200px;
-        width: 200px;
+        max-height: 200px;
+        max-width: 200px;
         margin-bottom: 10px;
       }
       input {
@@ -108,6 +108,7 @@ export default {
 
       span {
         margin-bottom: 5px;
+        font-size: 14px;
       }
     }
   }

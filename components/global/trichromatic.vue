@@ -24,19 +24,19 @@
         <tr>
           <th>AA</th>
           <td :class="aaNormal ? 'pass' : 'fail'">
-            {{ (aaNormal) ? '✓ PASS' : '✗ FAIL' }}
+            {{ (aaNormal) ? 'PASS' : 'FAIL' }}
           </td>
           <td :class="aaLarge ? 'pass' : 'fail'">
-            {{ (aaLarge) ? '✓ PASS' : '✗ FAIL' }}
+            {{ (aaLarge) ? 'PASS' : 'FAIL' }}
           </td>
         </tr>
         <tr>
           <th>AAA</th>
           <td :class="aaaNormal ? 'pass' : 'fail'">
-            {{ (aaaNormal) ? '✓ PASS' : '✗ FAIL' }}
+            {{ (aaaNormal) ? 'PASS' : 'FAIL' }}
           </td>
           <td :class="aaaLarge ? 'pass' : 'fail'">
-            {{ (aaaLarge) ? '✓ PASS' : '✗ FAIL' }}
+            {{ (aaaLarge) ? 'PASS' : 'FAIL' }}
           </td>
         </tr>
       </tbody>
@@ -119,6 +119,7 @@ export default {
     margin: 0 auto;
   }
   td {
+    font-size: 14px;
     &.pass {
       color: green;
     }
